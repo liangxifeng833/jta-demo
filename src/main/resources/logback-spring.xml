@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <contextName>logback</contextName>
+    <!--application.yml 传递参数，不能使用logback 自带的<property>标签 -->
+    <springProperty scope="context" name="logback.appname" source="logback.appname"/>
+    <springProperty scope="context" name="logback.logdir" source="logback.logdir"/>
+
+
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>【${logback.appname}】%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </layout>
+    </appender>
+    <!-- 正常日志到文件 -->
+    <appender name="fileLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--输出路径 每天一个日志文件
+            <fileNamePattern>${user.dir}/logs/log/wechatCard.%d.log</fileNamePattern>-->
+            <fileNamePattern>${logback.logdir}/log/${logback.appname}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!--日志文件保留天数-->
+            <maxHistory>99</maxHistory>
+        </rollingPolicy>
+        <!-- 定义日志格式 -->
+        <encoder>
+            <pattern>【${logback.appname}】%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!-- 错误日志到文件 -->
+    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 按照日志级别进行过滤 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 只收集error级别的日志，其他高级别和低级别的日志都放弃 -->
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!--滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--输出路径 每天一个日志文件
+            <fileNamePattern>${user.dir}/logs/error/wechatCard.%d.error</fileNamePattern>-->
+            <fileNamePattern>${logback.logdir}/error/${logback.appname}.%d{yyyy-MM-dd}.error</fileNamePattern>
+            <maxHistory>99</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>【${logback.appname}】%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!--
+    logger
+       属性：
+          1)name:用来指定受此logger约束的某一个包或者具体的某一个类
+          2)level:用来设置打印级别，大小写无关（最常用的几种）：DEBUG, INFO, WARN, ERROR
+    -->
+
+    <!-- 用于打印 Spring 在启动的时候初始化各个 Bean 的信息 -->
+    <!--<logger name="org.springframework.web" level="DEBUG"/>-->
+    <!--<logger name="domain.controller" level="DEBUG"/>-->
+    <!-- mybatis 日志打印如果在 ssm 中，可能就需要下边的7行了。-->
+    <!--<logger name="com.ibatis" level="DEBUG" />-->
+    <!--<logger name="com.ibatis.common.jdbc.SimpleDataSource" level="DEBUG" />-->
+    <!--<logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG" />-->
+    <!--<logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="DEBUG" />-->
+    <!--<logger name="java.sql.Connection" level="DEBUG" />-->
+    <!--<logger name="java.sql.Statement" level="DEBUG" />-->
+    <!--<logger name="java.sql.PreparedStatement" level="DEBUG" />-->
+
+    <!-- 以下这一句至关重要如果没有，就无法输出 sql 语句 -->
+    <!--注意：在 spring boot 中，想在控制台打印 mybatis 的 sql 语句，只需要配置下边这一句就好了。-->
+    <!--如果想要记录更详细的 SQL 日志，只需要把下面的日志级别改成 TRACE 就可以了-->
+    <!--即将 mapper 接口打入 logger 就行。-->
+    <logger name="domain.dao" level="DEBUG"></logger>
+    <!--root是根日志打印器，只有一个，负责整个系统的日志输出  -->
+    <root level="info">
+        <!-- 将上面三个输出终端配置到根打印器，将对整个系统 生效。 -->
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="fileLog"/>
+        <appender-ref ref="fileErrorLog"/>
+    </root>
+    <!-- logger是root的子打印器，可以有多个，输出name配置的包中的日志。 -->
+    <!-- 定义domain包下,开发和测试环境开启 > debug 级别log
+    <springProfile name="dev,release">
+        <logger name="domain" level="debug" additivity="false">
+            <appender-ref ref="consoleLog"/>
+            <appender-ref ref="fileLog"/>
+            <appender-ref ref="fileErrorLog"/>
+        </logger>
+    </springProfile>-->
+</configuration>
