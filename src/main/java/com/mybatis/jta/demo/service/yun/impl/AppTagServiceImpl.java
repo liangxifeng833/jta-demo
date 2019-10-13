@@ -31,12 +31,13 @@ public class AppTagServiceImpl {
         user.setCreateTime(null);
         userDao.insert(user);
 
-        SwitchDB.to(120);
+        SwitchDB.to(1);
 
-        System.out.println("数据库连接url="+((DruidXADataSource) SpringContextUtil.getBean("dataSourceYunXA")).getUrl());
-        AtomikosDataSourceBean dataSource = (AtomikosDataSourceBean) SpringContextUtil.getBean("dataSourceCar");
-        DruidXADataSource dataSource1 = (DruidXADataSource)dataSource.getXaDataSource();
-        System.out.println("db_car连接url="+dataSource1.getUrl());
+        System.out.println("yun数据库连接url="+((DruidXADataSource) SpringContextUtil.getBean("dataSourceYunXA")).getUrl());
+        DruidXADataSource dataSource = (DruidXADataSource) SpringContextUtil.getBean("dataSourceCarXA");
+        System.out.println("db_car连接url="+dataSource.getUrl());
+        //int a = 10/0; //故意异常回滚
+
         appTagDao.insert(appTag);
     }
 }
