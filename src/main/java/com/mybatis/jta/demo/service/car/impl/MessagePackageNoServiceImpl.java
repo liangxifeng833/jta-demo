@@ -1,5 +1,6 @@
 package com.mybatis.jta.demo.service.car.impl;
 
+import com.mybatis.jta.demo.dao.car_impl.MessagePackageNoDao;
 import com.mybatis.jta.demo.entity.car.MessagePackageNo;
 import com.mybatis.jta.demo.mapper.car.MessagePackageNoMapper;
 import com.mybatis.jta.demo.service.car.MessagePackageNoService;
@@ -15,10 +16,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MessagePackageNoServiceImpl  implements MessagePackageNoService {
+    //@Autowired
+    //private MessagePackageNoMapper messagePackageNoMapper;
+
     @Autowired
-    private MessagePackageNoMapper messagePackageNoMapper;
+    private MessagePackageNoDao messagePackageNoDao ;
+
 
     public void insert(MessagePackageNo messagePackageNo){
-        messagePackageNoMapper.insert(messagePackageNo);
+        messagePackageNo.setCreateTime(null);
+        messagePackageNoDao.insert(messagePackageNo);
     }
 }

@@ -1,5 +1,7 @@
 package com.mybatis.jta.demo.service.test.impl;
 
+import com.mybatis.jta.demo.dao.test_impl.RoleDao;
+import com.mybatis.jta.demo.dao.test_impl.UserDao;
 import com.mybatis.jta.demo.entity.test.Role;
 import com.mybatis.jta.demo.entity.test.User;
 import com.mybatis.jta.demo.mapper.test.RoleMapper;
@@ -15,16 +17,25 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class UserServiceImpl implements UserService {
+    //@Autowired
+    //private UserMapper userMapper;
+
+    //@Autowired
+    //private RoleMapper roleMapper;
+
     @Autowired
-    private UserMapper userMapper;
+    private UserDao userDao;
+
     @Autowired
-    private RoleMapper roleMapper;
+    private RoleDao roleDao;
+
     @Override
     @Transactional
     public void insert(User user) {
-        userMapper.insert(user);
+        user.setCreateTime(null);
+        userDao.insert(user);
         Role  role = new Role();
         role.setName("aa");
-        roleMapper.insert(role);
+        roleDao.insert(role);
     }
 }

@@ -1,4 +1,7 @@
 package com.mybatis.jta.demo.entity.car;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -19,7 +22,7 @@ public class MessagePackageNo {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private Timestamp createTime;
 
 
     public Integer getNo() {
@@ -30,12 +33,22 @@ public class MessagePackageNo {
         this.no = no;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getCreateTime() {
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if(createTime == null) return null;
+        return sdf.format(createTime);
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreateTime(String createTime) {
+        if(createTime == null)
+        {
+            java.util.Date now = new java.util.Date();
+            Timestamp timestamp = new Timestamp(now.getTime());
+            this.createTime = timestamp;
+        }else
+        {
+            this.createTime = Timestamp.valueOf(createTime);
+        }
     }
 
     @Override

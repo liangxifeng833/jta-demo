@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
  * @author lcj
  * @since 2017-09-25
  */
-@Repository
+//@Repository
 public interface MessagePackageNoMapper {
 
     /**

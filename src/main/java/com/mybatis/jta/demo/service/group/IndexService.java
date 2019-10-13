@@ -31,8 +31,9 @@ public class IndexService {
     public void save(MessagePackageNo messagePackageNo, User user) {
         messagePackageNoService.insert(messagePackageNo);
         userService.insert(user);
-        //TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         //int i = 4 / 0; // 除0异常,测试事务
+        //TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
     }
 
     //@Transactional
