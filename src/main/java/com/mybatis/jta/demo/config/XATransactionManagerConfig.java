@@ -33,6 +33,7 @@ public class XATransactionManagerConfig {
         return userTransactionManager;
     }
 
+
     @Bean(name = "transactionManager")
     @DependsOn({ "userTransaction", "atomikosTransactionManager" })
     public PlatformTransactionManager transactionManager() throws Throwable {

@@ -10,22 +10,30 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
 
 /**
- * Description: jta-demo
+ * Description: db_test数据源配置
  * Create by liangxifeng on 19-9-27
  */
 @Configuration
-@MapperScan(basePackages = {"com.mybatis.jta.demo.mapper.test*"}, sqlSessionTemplateRef = "sqlSessionTemplateTest") // 扫描dao或mapper接口
+// 扫描dao或mapper接口
+//@MapperScan(basePackages = {"com.mybatis.jta.demo.mapper.test*"}, sqlSessionTemplateRef = "sqlSessionTemplateTest")
+@MapperScan(basePackages = {"com.mybatis.jta.demo.dao.test_impl*"}, sqlSessionTemplateRef = "sqlSessionTemplateTest") //
 public class DataSourceTestConfig {
 
-
-    @Bean(name = "dataSourceTest")
-    public DataSource dataSourceTest(DataSourceTestProperties dataSourceTestProperties){
+    @Bean("dataSourceTestXA")
+    public DruidXADataSource dataSourceXA(DataSourceTestProperties dataSourceTestProperties) {
         DruidXADataSource dataSource = new DruidXADataSource();
         BeanUtils.copyProperties(dataSourceTestProperties,dataSource);
+        return dataSource;
+    }
+
+    @Bean(name = "dataSourceTest")
+    public DataSource dataSourceTest(@Qualifier("dataSourceTestXA") DruidXADataSource dataSource){
         AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
         xaDataSource.setXaDataSource(dataSource);
         xaDataSource.setUniqueResourceName("dataSourceTest");
@@ -38,7 +46,7 @@ public class DataSourceTestConfig {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
         bean.setTypeAliasesPackage("com.mybatis.jta.demo.entity.test");
-        //bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/test/*Mapper.xml"));
+        bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/test/*Mapper.xml"));
         return bean.getObject();
     }
 
