@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Description: jta-demo
+ * tb_user表service实现类
  * Create by liangxifeng on 19-9-27
  */
 @Service
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     private RoleDao roleDao;
 
     @Override
-    @Transactional
+    @Transactional //本库事务
     public void insert(User user) {
         user.setCreateTime(null);
         userDao.insert(user);

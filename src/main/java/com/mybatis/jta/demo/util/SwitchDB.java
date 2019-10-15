@@ -9,6 +9,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class SwitchDB {
+    /**
+     * 修改spring容器中私有库数据源url信息
+     * @param ljyunId 私有库云编号
+     */
     public static void to(int ljyunId) {
         //从spring容器中获取数据源
         DruidXADataSource dataSource = (DruidXADataSource) SpringContextUtil.getBean("dataSourceYunXA");

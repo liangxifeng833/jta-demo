@@ -4,7 +4,7 @@ import com.mybatis.jta.demo.entity.test.User;
 
 /**
  * <p>
- *  服务类
+ *  服务类service api
  * </p>
  *
  * @author liangxifeng
