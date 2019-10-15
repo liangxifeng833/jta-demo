@@ -10,7 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 /**
- * Description: jta-demo
+ * 测试service在该service中组合其他service
+ * 测试分布式事务
  * Create by liangxifeng on 19-9-27
  */
 @Service
@@ -22,8 +23,8 @@ public class IndexService {
     private UserService userService;
 
     /**
-     * 保存数据
-     *
+     * 保存 db_car.messagePackageNo表数据
+     * 保存 db_user.tb_user表数据，跨库分布式事务
      * @param messagePackageNo
      * @param user
      */
@@ -32,11 +33,16 @@ public class IndexService {
         messagePackageNoService.insert(messagePackageNo);
         userService.insert(user);
         //int i = 4 / 0; // 除0异常,测试事务
+        //手动回滚事务
         //TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 
     }
 
-    //@Transactional
+    /**
+     *
+     * @param user
+     */
+    @Transactional
     public void save2( User user) {
         userService.insert(user);
         //TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

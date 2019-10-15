@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-
 import javax.sql.DataSource;
 
 /**
@@ -30,6 +29,8 @@ public class DataSourceCarConfig {
     @Bean("dataSourceCarXA")
     public DruidXADataSource dataSourceXA(DataSourceCarProperties dataSourceCarProperties) {
         DruidXADataSource dataSource = new DruidXADataSource();
+        //使用BeanUtils将数据库连接属性映射到数据源DruidXADataSource的属性中
+        //当然也可以通过dataSource.setUrl()的方式配置
         BeanUtils.copyProperties(dataSourceCarProperties,dataSource);
         return dataSource;
     }

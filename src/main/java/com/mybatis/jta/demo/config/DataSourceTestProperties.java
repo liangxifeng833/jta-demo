@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Description: jta-demo
+ * db_test数据源属性配置类
  * Create by liangxifeng on 19-9-27
  */
 @Component //自动注入

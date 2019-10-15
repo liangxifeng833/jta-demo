@@ -11,7 +11,7 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
 /**
- * Description: jta-demo
+ * XA事务管理器配置类
  * Create by liangxifeng on 19-9-27
  */
 @Configuration
