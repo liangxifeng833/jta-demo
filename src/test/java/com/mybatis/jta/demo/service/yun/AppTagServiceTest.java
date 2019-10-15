@@ -14,7 +14,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import java.sql.SQLException;
 
 /**
- * Description: jta-demo
+ * Description: app_tag service单元测试
  * Create by liangxifeng on 19-9-27
  */
 public class AppTagServiceTest extends DemoApplicationTests {
